@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hra had</title>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        section {
+            background-color: rgb(31, 197, 31);
+            width: 20em;
+            height: 20em;
+        }
+
+        b {
+            background-color: rgb(24, 112, 41);
+        }
+
+        b,
+        i {
+            width: 1em;
+            height: 1em;
+            display: block;
+            position: absolute;
+            border-radius: 7px;
+        }
+    </style>
+</head>
+
+<body>
+    <section>
+        <div id="snake">
+            <b></b>
+            <b></b>
+            <b></b>
+        </div>
+        <i id="apple">🍎</i>
+    </section>
+
+    <script>
+        const areaSize = 20
+
+        let snakePosition = [0, 0]
+        let applePositionReal = [18.7, 18.7]
+        let applePositionToSnake = applePositionReal.map(a => a + 0.3)
+
+        let directionLeft = [-1, 0]
+        let directionRight = [1, 0]
+        let directionUp = [0, -1]
+        let directionDown = [0, 1]
+
+        let direction = directionRight
+
+        const setApplePositionReal = () => {
+            applePositionReal = [Math.round(Math.random() * 20) - 0.3, Math.round(Math.random() * 20) - 0.3] 
+            apple.style.left = applePositionReal[0]+ "em"
+            apple.style.top = applePositionReal[1] + "em"
+            applePositionToSnake = applePositionReal.map(a => a + 0.3)
+        }
+
+        setApplePositionReal()
+
+        const setDirection = (event) => {
+            const key = event.key
+
+            if (key === "ArrowLeft" && direction != directionRight) {
+                direction = directionLeft
+            } else if (key === "ArrowRight" && direction != directionLeft) {
+                direction = directionRight
+            } else if (key === "ArrowUp" && direction != directionDown) {
+                direction = directionUp
+            } else if (key === "ArrowDown" && direction != directionUp) {
+                direction = directionDown
+            }
+        }
+
+        window.onkeydown = setDirection
+
+        const moveToDirection = (e, i) => {
+            const location = (e + direction[i]) % areaSize
+            return location < 0 ? areaSize - 1 : location
+        }
+
+        const step = () => {
+            const tail = snake.children[0]
+            const newTail = tail.cloneNode()
+
+            snakePosition = snakePosition.map(moveToDirection)
+
+            tail.style.left = snakePosition[0] + "em";
+            tail.style.top = snakePosition[1] + "em";
+
+            if (applePositionToSnake[0] == snakePosition[0] && applePositionToSnake[1] == snakePosition[1]) {
+                setApplePositionReal()
+                snake.prepend(newTail)
+            }
+
+            snake.append(tail)
+        }
+
+        setInterval(step, 200);
+
+    </script>
+</body>
+
+</html>
