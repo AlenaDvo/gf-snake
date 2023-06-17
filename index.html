@@ -48,16 +48,19 @@
         let applePositionReal = [18.7, 18.7]
         let applePositionToSnake = applePositionReal.map(a => a + 0.3)
 
-        let directionLeft = [-1, 0]
-        let directionRight = [1, 0]
-        let directionUp = [0, -1]
-        let directionDown = [0, 1]
+        const directionLeft = [-1, 0]
+        const directionRight = [1, 0]
+        const directionUp = [0, -1]
+        const directionDown = [0, 1]
 
         let direction = directionRight
 
+        let bodyLength = 3
+        let bodyPosition = [[0, 0], [0, 0], [0, 0]]
+
         const setApplePositionReal = () => {
-            applePositionReal = [Math.round(Math.random() * 20) - 0.3, Math.round(Math.random() * 20) - 0.3] 
-            apple.style.left = applePositionReal[0]+ "em"
+            applePositionReal = [Math.round(Math.random() * 20) - 0.3, Math.round(Math.random() * 20) - 0.3]
+            apple.style.left = applePositionReal[0] + "em"
             apple.style.top = applePositionReal[1] + "em"
             applePositionToSnake = applePositionReal.map(a => a + 0.3)
         }
@@ -91,18 +94,34 @@
 
             snakePosition = snakePosition.map(moveToDirection)
 
+            for (let i = 4; i < bodyLength; i++) {
+                if (bodyPosition[i][0] == bodyPosition[0][0] && bodyPosition[i][1] == bodyPosition[0][1]) {
+                    alert("Sám ses kousnul, saláte! Prohráls!")
+                }
+            }
+
             tail.style.left = snakePosition[0] + "em";
             tail.style.top = snakePosition[1] + "em";
 
             if (applePositionToSnake[0] == snakePosition[0] && applePositionToSnake[1] == snakePosition[1]) {
                 setApplePositionReal()
                 snake.prepend(newTail)
+
+                bodyLength++
+                bodyPosition.unshift(snakePosition)
+            } else {
+                for (let i = bodyLength - 1; i > 0; i--) {
+                    bodyPosition[i] = bodyPosition[i - 1]
+                }
             }
 
+            bodyPosition[0] = snakePosition
+
             snake.append(tail)
+
         }
 
-        setInterval(step, 200);
+        setInterval(step, 300);
 
     </script>
 </body>
