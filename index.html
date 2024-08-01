@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hra had</title>
+    <title>Snake game</title>
     <style>
         body {
             margin: 0;
@@ -96,7 +96,7 @@
 
             for (let i = 4; i < bodyLength; i++) {
                 if (bodyPosition[i][0] == bodyPosition[0][0] && bodyPosition[i][1] == bodyPosition[0][1]) {
-                    alert("Sám ses kousnul, saláte! Prohráls!")
+                    alert("You bit yourself, you lose!")
                 }
             }
 
